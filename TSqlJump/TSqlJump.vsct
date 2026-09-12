@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable">
+	<Extern href="stdidcmd.h"/>
+	<Extern href="vsshlids.h"/>
+
+	<Commands package="guidTSqlJumpPackage">
+		<Groups>
+			<!-- Sadece Tools menüsü için ana grup -->
+			<Group guid="guidTSqlJumpCmdSet" id="TSqlJumpGroup" priority="0x0600"/>
+
+			<!-- Sadece Sağ Tık menüsü için ayrı bir grup -->
+			<!-- Sağ Tık menüsü için grup (Priority düşürüldü: En üstlere taşınması için) -->
+			<Group guid="guidTSqlJumpCmdSet" id="TSqlJumpContextMenuGroup" priority="0x0100">
+				<Parent guid="queryWindowContextCommandSet" id="queryWindowContextMenu" />
+			</Group>
+		</Groups>
+
+		<Buttons>
+			<!-- Insert Template: Sadece Tools grubuna bağlı -->
+			<Button guid="guidTSqlJumpCmdSet" id="cmdidTSqlJump" type="Button">
+				<Parent guid="guidTSqlJumpCmdSet" id="TSqlJumpGroup"/>
+				<Strings>
+					<ButtonText>Insert Template</ButtonText>
+				</Strings>
+			</Button>
+
+			<!-- Go to Object: Sağ tık grubuna bağlı -->
+			<Button guid="guidTSqlJumpCmdSet" id="cmdidGoToObject" type="Button">
+				<Parent guid="guidTSqlJumpCmdSet" id="TSqlJumpContextMenuGroup"/>
+				<Strings>
+					<ButtonText>Go to Object</ButtonText>
+				</Strings>
+			</Button>
+
+			<!-- Locate in Object Explorer: Sağ tık grubuna bağlı -->
+			<Button guid="guidTSqlJumpCmdSet" id="cmdidLocateObject" priority="0x0102" type="Button">
+				<Parent guid="guidTSqlJumpCmdSet" id="TSqlJumpContextMenuGroup"/>
+				<Strings>
+					<ButtonText>Locate in Object Explorer</ButtonText>
+				</Strings>
+			</Button>
+		</Buttons>
+	</Commands>
+
+	<CommandPlacements>
+		<!-- Tools Menüsü İçin Ana Grubun Konumlandırılması -->
+		<CommandPlacement guid="guidTSqlJumpCmdSet" id="TSqlJumpGroup" priority="0x0600">
+			<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+		</CommandPlacement>
+	</CommandPlacements>
+
+	<KeyBindings>
+		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidTSqlJump" editor="guidVSStd97" key1="VK_F12" mod1="" />
+		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidGoToObject" editor="guidVSStd97" key1="VK_F12" mod1="CONTROL" />
+		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidLocateObject" editor="guidVSStd97" key1="VK_F12" mod1="CONTROL SHIFT" />
+	</KeyBindings>
+
+	<Symbols>
+		<GuidSymbol name="guidTSqlJumpPackage" value="{a4667fec-850a-4ff1-a300-f040ebf94395}" />
+		<GuidSymbol name="guidTSqlJumpCmdSet" value="{d6c3c7e1-4c76-4c4d-9f3e-7e2e5c6a8b11}">
+			<IDSymbol name="TSqlJumpGroup" value="0x1020"/>
+			<IDSymbol name="TSqlJumpContextMenuGroup" value="0x1021"/>
+			<IDSymbol name="cmdidTSqlJump" value="0x0100"/>
+			<IDSymbol name="cmdidGoToObject" value="0x0101"/>
+			<IDSymbol name="cmdidLocateObject" value="0x0102"/>
+		</GuidSymbol>
+
+		<!-- SSMS SQL Editor Context Menu -->
+		<GuidSymbol name="queryWindowContextCommandSet" value="{33F13AC3-80BB-4ECB-85BC-225435603A5E}">
+			<IDSymbol name="queryWindowContextMenu" value="0x0050" />
+		</GuidSymbol>
+	</Symbols>
+</CommandTable>

@@ -1,0 +1,74 @@
+﻿[[snippet]]
+name = "Select Query"
+shortName = "sf"
+shortcut = "F12"
+tsql = """
+SELECT * FROM """
+
+[[snippet]]
+name = "Select Top 1 Query"
+shortName = "sf1"
+shortcut = ""
+tsql = """
+SELECT TOP(1) * FROM """
+
+[[snippet]]
+name = "Select Where Query"
+shortName = "sw"
+shortcut = "F11"
+tsql = """
+SELECT * FROM 
+WHERE """
+
+[[snippet]]
+name = "Select Top 1 Where Query"
+shortName = "sw1"
+shortcut = ""
+tsql = """
+SELECT TOP(1) * FROM 
+WHERE """
+
+[[snippet]]
+name = "Delete From"
+shortName = "df"
+shortcut = "F10"
+tsql = """
+DELETE FROM """
+
+[[snippet]]
+name = "Delete Where"
+shortName = "dw"
+shortcut = "F9"
+tsql = """
+DELETE FROM 
+WHERE """
+
+[[snippet]]
+name = "Update"
+shortName = "us"
+shortcut = ""
+tsql = """
+UPDATE 
+SET 
+WHERE """
+
+[[snippet]]
+name = "Cursor"
+shortName = "cr"
+shortcut = ""
+tsql = """
+DECLARE C1 CURSOR FORWARD_ONLY READ_ONLY FOR
+	SELECT * FROM 
+OPEN C1;
+
+FETCH NEXT FROM C1 INTO 
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	
+	FETCH NEXT FROM C1 INTO 
+END
+
+CLOSE C1;
+DEALLOCATE C1;
+"""

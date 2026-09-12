@@ -1,0 +1,75 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>14</LangVersion>
+
+    <!-- VSIX settings -->
+    <VSSDKBuildToolsAutoSetup>true</VSSDKBuildToolsAutoSetup>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+  </PropertyGroup>
+	
+	<ItemGroup>
+		<Reference Include="System.Windows.Forms" />
+		<Reference Include="System.Design" />
+
+		<Reference Include="SqlWorkbench.Interfaces">
+			<HintPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\SqlWorkbench.Interfaces.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Microsoft.SqlServer.RegSvrEnum">
+			<HintPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Microsoft.SqlServer.RegSvrEnum.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Microsoft.SqlServer.Smo">
+			<HintPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Microsoft.SqlServer.Smo.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Microsoft.SqlServer.ConnectionInfo">
+			<HintPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Microsoft.SqlServer.Management.Sdk.Sfc">
+			<HintPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Microsoft.SqlServer.Management.Sdk.Sfc.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+
+		<Reference Include="Microsoft.SqlServer.SqlEnum">
+			<HintPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Microsoft.SqlServer.SqlEnum.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+		
+		<Reference Include="Microsoft.SqlServer.SqlEnum">
+			<HintPath>C:\Program Files\Microsoft SQL Server Management Studio 22\Release\Common7\IDE\Microsoft.Data.SqlClient.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<VSCTCompile Include="TSqlJump.vsct">
+			<ResourceName>Menus.ctmenu</ResourceName>
+		</VSCTCompile>
+	</ItemGroup>
+
+	<ItemGroup>
+        <ProjectCapability Include="CreateVsixContainer" />
+    </ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.14.40265" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="18.9.820" />
+  </ItemGroup>
+  <ItemGroup>
+    <VSCTCompile Include="TSqlJump.vsct" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Templates.toml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
