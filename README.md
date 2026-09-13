@@ -12,10 +12,11 @@
 ## Features
 
 | Shortcut           | Action                                                              |
-| ------------------ | ------------------------------------------------------------------- |
-| `Ctrl+F12`         | **Go to Object** — Opens the object's script in a new query window  |
-| `Ctrl+Shift+F12`   | **Locate in Object Explorer** — Highlights the object in OE         |
-| `F12`              | **Insert Template** — Inserts a T-SQL snippet                       |
+| ------------------ | --------------------------------------------------------------------- |
+| `Ctrl+F12`         | **Go to Object** — Opens the object's script in a new query window    |
+| `Shift+F12`        | **Locate in Object Explorer** — Highlights the object in OE           |
+| `Ctrl+Shift+F12`   | **Quick Object Search** — Search for any object by name and act on it |
+| `F12`              | **Insert Template** — Inserts a T-SQL snippet                         |
 
 ### Supported Object Types
 
@@ -24,6 +25,10 @@
 - ✅ Stored Procedures
 - ✅ Scalar / Table-Valued / Inline Table-Valued Functions
 - ✅ DML & CLR Triggers
+
+*(All three commands — Go to Object, Locate in Object Explorer, and Quick Object Search — support the same object types.)*
+
+---
 
 ### Screenshots
 
@@ -79,16 +84,36 @@ You can find the exact ID in `source.extension.vsixmanifest`.
 
 Place your cursor over any object name in the SQL editor:
 
-```sql
+\`\`\`sql
 SELECT * FROM [dbo].[Sys_Settings]
 --             ^^^^^^^^^^^^^^^ cursor anywhere here
-```
+\`\`\`
 
 Then press:
 
 - **`Ctrl+F12`** → Opens the object's `ALTER` / `CREATE` script in a new query window.
-- **`Ctrl+Shift+F12`** → Locates the object in **Object Explorer** (highlights it, ready for right-click actions like *Design*).
-- **`F12`** → Opens the template selector.
+- **`Shift+F12`** → Locates the object in **Object Explorer** (highlights it, ready for right-click actions like *Design*).
+
+Don't have your cursor on an object, or don't remember the exact name? Press **`Ctrl+Shift+F12`** anywhere in the editor to open **Quick Object Search** instead — see below.
+
+Anywhere in the editor, press **`F12`** to open the template selector and insert a T-SQL snippet — see [Templates](#templates) below.
+
+---
+
+## Quick Object Search
+
+Don't have your cursor positioned on an object name — or just don't remember 
+the exact one? Press **`Ctrl+Shift+F12`** anywhere in the T-SQL editor to open 
+a live search dialog.
+
+- Type any part of a table, view, procedure, function, or trigger name — 
+  results filter as you type.
+- Use **↑ / ↓** to move through the results without leaving the search box.
+- **`F8`** (or double-click) → **Go to Object** — opens the script for the selected item.
+- **`F9`** → **Locate in Object Explorer** for the selected item.
+- **`Esc`** clears the search box first; press it again to close the dialog.
+
+![Quick Object Search](docs/images/quick-object-search.png)
 
 ---
 
