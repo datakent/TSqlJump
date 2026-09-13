@@ -30,18 +30,6 @@
 
 ---
 
-### Screenshots
-
-**Right-click menu in T-SQL editor:**
-
-![Context Menu](docs/images/context-menu.png)
-
-**Insert Template from Tools menu:**
-
-![Insert Template](docs/images/tools-menu.png)
-
----
-
 ## Installation
 
 ### Requirements
@@ -84,10 +72,10 @@ You can find the exact ID in `source.extension.vsixmanifest`.
 
 Place your cursor over any object name in the SQL editor:
 
-\`\`\`sql
+```sql
 SELECT * FROM [dbo].[Sys_Settings]
 --             ^^^^^^^^^^^^^^^ cursor anywhere here
-\`\`\`
+```
 
 Then press:
 
@@ -126,6 +114,9 @@ Templates are stored in a TOML file located at:
 ```
 
 Click the **"Templates.toml"** link in the template dialog to open it directly.
+
+![Insert Template](docs/images/tools-menu.png)
+*Press `F12` anywhere in the editor to open the template selector.*
 
 ### Example Template
 
