@@ -69,12 +69,18 @@ namespace TSqlJump
                 View = View.Details,
                 FullRowSelect = true,
                 HideSelection = false,
-                Font = new Font("Segoe UI", 12F)
+                Font = new Font("Segoe UI", 12F),
+                OwnerDraw = true
             };
-            lstResults.Columns.Add("Object Name", 400);
+
+            lstResults.Columns.Add("Object Name", 420);
             lstResults.Columns.Add("Object Type", 180);
             lstResults.DoubleClick += (s, e) => TryAccept(QuickObjectSearchAction.GoToObject);
             lstResults.KeyDown += LstResults_KeyDown;
+
+            lstResults.DrawColumnHeader += lstResults_DrawColumnHeader;
+            lstResults.DrawItem += lstResults_DrawItem;
+            lstResults.DrawSubItem += lstResults_DrawSubItem;
 
             var buttonPanel = new FlowLayoutPanel
             {
@@ -104,6 +110,37 @@ namespace TSqlJump
 
             KeyDown += QuickObjectSearchForm_KeyDown;
             Shown += (s, e) => txtSearch.Focus();
+        }
+
+        // Sütun Başlıklarını Kalın Çizen Kısım
+        private void lstResults_DrawColumnHeader(object sender, DrawListViewColumnHeaderEventArgs e)
+        {
+            // Varsayılan arka planı çiz
+            e.DrawBackground();
+
+            // Kalın yazı tipi (Bold) oluşturuyoruz
+            using (Font headerFont = new Font(e.Font, FontStyle.Bold))
+            {
+                // Metnin hizalamasını sütun ayarlarına göre belirle
+                TextFormatFlags flags = TextFormatFlags.VerticalCenter | TextFormatFlags.Left;
+                if (e.Header.TextAlign == HorizontalAlignment.Center) flags = TextFormatFlags.VerticalCenter | TextFormatFlags.HorizontalCenter;
+                if (e.Header.TextAlign == HorizontalAlignment.Right) flags = TextFormatFlags.VerticalCenter | TextFormatFlags.Right;
+
+                // Metni kalın olarak yazdır
+                TextRenderer.DrawText(e.Graphics, e.Header.Text, headerFont, e.Bounds, Color.Black, flags);
+            }
+        }
+
+        // Satır öğelerinin varsayılan şekilde çizilmesini sağlayan kısım
+        private void lstResults_DrawItem(object sender, DrawListViewItemEventArgs e)
+        {
+            e.DrawDefault = true; // İçerik satırları normal standartta çizilsin
+        }
+
+        // Alt öğelerin varsayılan şekilde çizilmesini sağlayan kısım
+        private void lstResults_DrawSubItem(object sender, DrawListViewSubItemEventArgs e)
+        {
+            e.DrawDefault = true; // Alt öğeler normal standartta çizilsin
         }
 
         private void TxtSearch_TextChanged(object sender, EventArgs e)
