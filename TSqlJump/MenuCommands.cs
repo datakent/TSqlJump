@@ -15,6 +15,7 @@ namespace TSqlJump
         public const int CodeTemplateCommandId = 0x0100;
         public const int GoToObjectCommandId = 0x0101;
         public const int LocateObjectCommandId = 0x0102;
+        public const int QuickObjectSearchCommandId = 0x0103;
 
         public static readonly Guid CommandSet = new Guid("d6c3c7e1-4c76-4c4d-9f3e-7e2e5c6a8b11");
 
@@ -35,7 +36,11 @@ namespace TSqlJump
 
             var locateCommandId = new CommandID(CommandSet, LocateObjectCommandId);
             var locateCommand = new MenuCommand(LocateInObjectExplorer, locateCommandId);
+
+            var quickSearchCommandId = new CommandID(CommandSet, QuickObjectSearchCommandId);
+            var quickSearchCommand = new MenuCommand(ShowQuickObjectSearch, quickSearchCommandId);
             
+            commandService.AddCommand(quickSearchCommand);
             commandService.AddCommand(locateCommand);
             commandService.AddCommand(goToObjectCommand);
             commandService.AddCommand(menuCommand);
@@ -142,7 +147,30 @@ namespace TSqlJump
             return true;
         }
 
+        private void ShowQuickObjectSearch(object sender, EventArgs e)
+        {
+            ThreadHelper.ThrowIfNotOnUIThread();
 
+            var connection = SqlConnectionProvider.GetActiveConnection();
+
+            if (connection == null)
+            {
+                MessageBox.Show("No active SQL Server connection was found.", "TSqlJump",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (var form = new QuickObjectSearchForm(connection))
+            {
+                if (form.ShowDialog() != DialogResult.OK || form.SelectedReference == null)
+                    return;
+
+                if (form.SelectedAction == QuickObjectSearchAction.Locate)
+                    SqlObjectNavigator.Locate(form.SelectedObjectType, form.SelectedReference, connection);
+                else
+                    SqlObjectNavigator.Open(form.SelectedObjectType, form.SelectedReference, connection);
+            }
+        }
 
         private void LocateInObjectExplorer(object sender, EventArgs e)
         {

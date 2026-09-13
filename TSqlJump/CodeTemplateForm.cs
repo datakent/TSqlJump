@@ -11,7 +11,7 @@ namespace TSqlJump
         private readonly CodeTemplateRepository repository;
 
         private TextBox txtSearch;
-        private ListView lstSnippets;
+        private ListView lstResults;
 
         private List<CodeTemplateSnippet> snippets;
 
@@ -49,7 +49,7 @@ namespace TSqlJump
                 new Size(600, 400);
 
             KeyPreview = true;
-
+            ShowIcon = false;
 
 
             var statusStrip = new StatusStrip
@@ -90,7 +90,7 @@ namespace TSqlJump
 
             this.KeyDown += Form_KeyDown;
 
-            lstSnippets = new ListView
+            lstResults = new ListView
             {
                 Dock = DockStyle.Fill,
 
@@ -107,15 +107,15 @@ namespace TSqlJump
                 OwnerDraw = true
             };
 
-            lstSnippets.Columns.Add(
+            lstResults.Columns.Add(
                 "Short Name",
                 120);
 
-            lstSnippets.Columns.Add(
+            lstResults.Columns.Add(
                 "SQL Statement",
                 430);
 
-            lstSnippets.Columns.Add(
+            lstResults.Columns.Add(
                 "Shortcut",
                 100);
 
@@ -124,32 +124,56 @@ namespace TSqlJump
                 ImageSize = new Size(1, 34)
             };
 
-            lstSnippets.SmallImageList =
+            lstResults.SmallImageList =
                 imageList;
 
-            lstSnippets.DrawColumnHeader +=
-                LstSnippets_DrawColumnHeader;
+            lstResults.DrawColumnHeader +=
+                lstResults_DrawColumnHeader;
 
-            lstSnippets.DrawItem +=
-                LstSnippets_DrawItem;
+            lstResults.DrawItem +=
+                lstResults_DrawItem;
 
-            lstSnippets.DrawSubItem +=
-                LstSnippets_DrawSubItem;
+            lstResults.DrawSubItem +=
+                lstResults_DrawSubItem;
 
-            lstSnippets.DoubleClick +=
-                LstSnippets_DoubleClick;
+            lstResults.DoubleClick +=
+                lstResults_DoubleClick;
 
-            lstSnippets.KeyDown +=
-                LstSnippets_KeyDown;
+            lstResults.KeyDown +=
+                lstResults_KeyDown;
 
 
             statusStrip.Items.Add(lblFile);
             Controls.Add(statusStrip);
-            Controls.Add(lstSnippets);
+            Controls.Add(lstResults);
             Controls.Add(txtSearch);
 
             Shown +=
                 CodeTemplateForm_Shown;
+        }
+
+        private void MoveSelection(int direction)
+        {
+            if (lstResults.Items.Count == 0)
+                return;
+
+            int currentIndex = lstResults.SelectedIndices.Count > 0
+                ? lstResults.SelectedIndices[0]
+                : -1;
+
+            int newIndex = currentIndex + direction;
+
+            if (newIndex < 0)
+                newIndex = 0;
+
+            if (newIndex >= lstResults.Items.Count)
+                newIndex = lstResults.Items.Count - 1;
+
+            foreach (ListViewItem item in lstResults.SelectedItems)
+                item.Selected = false;
+
+            lstResults.Items[newIndex].Selected = true;
+            lstResults.Items[newIndex].EnsureVisible();
         }
 
         private void CodeTemplateForm_Shown(
@@ -169,11 +193,11 @@ namespace TSqlJump
         private void RefreshList(
             IEnumerable<CodeTemplateSnippet> items)
         {
-            lstSnippets.BeginUpdate();
+            lstResults.BeginUpdate();
 
             try
             {
-                lstSnippets.Items.Clear();
+                lstResults.Items.Clear();
 
                 foreach (CodeTemplateSnippet snippet in items)
                 {
@@ -189,12 +213,12 @@ namespace TSqlJump
 
                     item.Tag = snippet;
 
-                    lstSnippets.Items.Add(item);
+                    lstResults.Items.Add(item);
                 }
             }
             finally
             {
-                lstSnippets.EndUpdate();
+                lstResults.EndUpdate();
             }
         }
 
@@ -290,12 +314,28 @@ namespace TSqlJump
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
+
+            if (e.KeyCode == Keys.Down)
+            {
+                MoveSelection(1);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
+
+            if (e.KeyCode == Keys.Up)
+            {
+                MoveSelection(-1);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+                return;
+            }
         }
 
         /// <summary>
         /// Liste odaktayken ENTER.
         /// </summary>
-        private void LstSnippets_KeyDown(
+        private void lstResults_KeyDown(
             object sender,
             KeyEventArgs e)
         {
@@ -339,11 +379,11 @@ namespace TSqlJump
         /// </summary>
         private void AcceptFirstSnippet()
         {
-            if (lstSnippets.Items.Count == 0)
+            if (lstResults.Items.Count == 0)
                 return;
 
             ListViewItem item =
-                lstSnippets.Items[0];
+                lstResults.Items[0];
 
             CodeTemplateSnippet snippet =
                 item.Tag as CodeTemplateSnippet;
@@ -359,11 +399,11 @@ namespace TSqlJump
         /// </summary>
         private void AcceptSelectedSnippet()
         {
-            if (lstSnippets.SelectedItems.Count == 0)
+            if (lstResults.SelectedItems.Count == 0)
                 return;
 
             CodeTemplateSnippet snippet =
-                lstSnippets.SelectedItems[0]
+                lstResults.SelectedItems[0]
                     .Tag as CodeTemplateSnippet;
 
             if (snippet == null)
@@ -383,14 +423,14 @@ namespace TSqlJump
             Close();
         }
 
-        private void LstSnippets_DoubleClick(
+        private void lstResults_DoubleClick(
             object sender,
             EventArgs e)
         {
             AcceptSelectedSnippet();
         }
 
-        private void LstSnippets_DrawColumnHeader(
+        private void lstResults_DrawColumnHeader(
             object sender,
             DrawListViewColumnHeaderEventArgs e)
         {
@@ -420,14 +460,14 @@ namespace TSqlJump
             }
         }
 
-        private void LstSnippets_DrawItem(
+        private void lstResults_DrawItem(
             object sender,
             DrawListViewItemEventArgs e)
         {
             // Asıl satır çizimi DrawSubItem'da yapılıyor.
         }
 
-        private void LstSnippets_DrawSubItem(
+        private void lstResults_DrawSubItem(
             object sender,
             DrawListViewSubItemEventArgs e)
         {
@@ -474,7 +514,7 @@ namespace TSqlJump
             TextRenderer.DrawText(
                 e.Graphics,
                 e.SubItem.Text,
-                lstSnippets.Font,
+                lstResults.Font,
                 new Rectangle(
                     e.Bounds.X + 8,
                     e.Bounds.Y,

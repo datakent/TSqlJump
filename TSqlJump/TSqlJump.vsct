@@ -17,7 +17,7 @@
 
 		<Buttons>
 			<!-- Insert Template: Sadece Tools grubuna bağlı -->
-			<Button guid="guidTSqlJumpCmdSet" id="cmdidTSqlJump" type="Button">
+			<Button guid="guidTSqlJumpCmdSet" id="cmdidCodeTemplate" type="Button">
 				<Parent guid="guidTSqlJumpCmdSet" id="TSqlJumpGroup"/>
 				<Strings>
 					<ButtonText>Insert Template</ButtonText>
@@ -39,6 +39,14 @@
 					<ButtonText>Locate in Object Explorer</ButtonText>
 				</Strings>
 			</Button>
+
+			<Button guid="guidTSqlJumpCmdSet" id="cmdidQuickObjectSearch" type="Button">
+				<Parent guid="guidTSqlJumpCmdSet" id="TSqlJumpGroup"/>
+				<Strings>
+					<ButtonText>Quick Object Search...</ButtonText>
+				</Strings>
+			</Button>			
+			
 		</Buttons>
 	</Commands>
 
@@ -50,9 +58,10 @@
 	</CommandPlacements>
 
 	<KeyBindings>
-		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidTSqlJump" editor="guidVSStd97" key1="VK_F12" mod1="" />
+		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidCodeTemplate" editor="guidVSStd97" key1="VK_F12" mod1="" />
 		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidGoToObject" editor="guidVSStd97" key1="VK_F12" mod1="CONTROL" />
-		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidLocateObject" editor="guidVSStd97" key1="VK_F12" mod1="CONTROL SHIFT" />
+		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidLocateObject" editor="guidVSStd97" key1="VK_F12" mod1="SHIFT" />
+		<KeyBinding guid="guidTSqlJumpCmdSet" id="cmdidQuickObjectSearch" editor="guidVSStd97" key1="VK_F12" mod1="CONTROL SHIFT" />
 	</KeyBindings>
 
 	<Symbols>
@@ -60,9 +69,11 @@
 		<GuidSymbol name="guidTSqlJumpCmdSet" value="{d6c3c7e1-4c76-4c4d-9f3e-7e2e5c6a8b11}">
 			<IDSymbol name="TSqlJumpGroup" value="0x1020"/>
 			<IDSymbol name="TSqlJumpContextMenuGroup" value="0x1021"/>
-			<IDSymbol name="cmdidTSqlJump" value="0x0100"/>
-			<IDSymbol name="cmdidGoToObject" value="0x0101"/>
+			
+			<IDSymbol name="cmdidCodeTemplate" value="0x0100"/>
+			<IDSymbol name="cmdidGoToObject" value="0x0101"/>		
 			<IDSymbol name="cmdidLocateObject" value="0x0102"/>
+			<IDSymbol name="cmdidQuickObjectSearch" value="0x0103"/>
 		</GuidSymbol>
 
 		<!-- SSMS SQL Editor Context Menu -->
