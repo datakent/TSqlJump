@@ -150,17 +150,23 @@ namespace TSqlJump
         private void ShowQuickObjectSearch(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
+            string DatabaName = "";
 
-            var connection = SqlConnectionProvider.GetActiveConnection();
+            var connection = SqlConnectionProvider.GetActiveConnection()
+                ?? SqlConnectionProvider.GetConnectionFromObjectExplorerSelection(out DatabaName);            
 
             if (connection == null)
             {
-                MessageBox.Show("No active SQL Server connection was found.", "TSqlJump",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    "No active SQL Server connection was found.\n\n" +
+                    "Open a query window, or select a server/database node in Object Explorer.",
+                    "TSqlJump",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
 
-            using (var form = new QuickObjectSearchForm(connection))
+            using (var form = new QuickObjectSearchForm(connection, DatabaName))
             {
                 if (form.ShowDialog() != DialogResult.OK || form.SelectedReference == null)
                     return;
@@ -169,6 +175,8 @@ namespace TSqlJump
                     SqlObjectNavigator.Locate(form.SelectedObjectType, form.SelectedReference, connection);
                 else
                     SqlObjectNavigator.Open(form.SelectedObjectType, form.SelectedReference, connection);
+                
+                //form.Dispose();
             }
         }
 

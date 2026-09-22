@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.PlatformUI;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -31,10 +32,14 @@ namespace TSqlJump
         public string SelectedObjectType { get; private set; }
         public QuickObjectSearchAction SelectedAction { get; private set; }
 
-        public QuickObjectSearchForm(IDbConnection connection)
+        public QuickObjectSearchForm(IDbConnection connection, string DatabaName)
         {
             templateConnection = connection;
-            database = connection.Database;
+
+            if(DatabaName != "")
+                database = DatabaName;
+            else
+                database = connection.Database;
 
             debounceTimer = new Timer { Interval = 300 };
             debounceTimer.Tick += (s, e) => { debounceTimer.Stop(); PerformSearch(); };
@@ -44,7 +49,7 @@ namespace TSqlJump
 
         private void InitializeForm()
         {
-            Text = "Quick Object Search";
+            Text = "Quick Object Search - " + database;
             StartPosition = FormStartPosition.CenterScreen;
             Width = 680;
             Height = 560;
