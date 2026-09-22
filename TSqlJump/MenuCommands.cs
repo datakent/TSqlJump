@@ -150,10 +150,10 @@ namespace TSqlJump
         private void ShowQuickObjectSearch(object sender, EventArgs e)
         {
             ThreadHelper.ThrowIfNotOnUIThread();
-            string DatabaName = "";
+            string DatabaseName = "";
 
             var connection = SqlConnectionProvider.GetActiveConnection()
-                ?? SqlConnectionProvider.GetConnectionFromObjectExplorerSelection(out DatabaName);            
+                ?? SqlConnectionProvider.GetConnectionFromObjectExplorerSelection(out DatabaseName);            
 
             if (connection == null)
             {
@@ -166,7 +166,7 @@ namespace TSqlJump
                 return;
             }
 
-            using (var form = new QuickObjectSearchForm(connection, DatabaName))
+            using (var form = new QuickObjectSearchForm(connection, DatabaseName))
             {
                 if (form.ShowDialog() != DialogResult.OK || form.SelectedReference == null)
                     return;

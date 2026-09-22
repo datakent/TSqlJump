@@ -24,9 +24,9 @@ namespace TSqlJump
             return match.Success ? match.Groups[1].Value : null;
         }
 
-        public static IDbConnection GetConnectionFromObjectExplorerSelection(out string DatabaName)
+        public static IDbConnection GetConnectionFromObjectExplorerSelection(out string DatabaseName)
         {
-            DatabaName = "";
+            DatabaseName = "";
             ThreadHelper.ThrowIfNotOnUIThread();
             
             try
@@ -44,9 +44,9 @@ namespace TSqlJump
                 //selectedNodes[0].Name    -> ağaçta seçili objenin adını verir
                 //selectedNodes[0].Context -> Server[@Name='DATASERVER']/Database[@Name='NK_Test']
                 //veya detay seçim varsa   -> Server[@Name='DATASERVER']/Database[@Name='NK_Test']/Table[@Name='CompanyDocuments' and @Schema='dbo']
-                DatabaName = GetDatabaseName(selectedNodes[0].Context);
+                DatabaseName = GetDatabaseName(selectedNodes[0].Context);
 
-                if (string.IsNullOrEmpty(DatabaName))
+                if (string.IsNullOrEmpty(DatabaseName))
                     return null;
 
                 //selectedNodes[0].Connection -> dönen örnek veri (database verisi yok!)

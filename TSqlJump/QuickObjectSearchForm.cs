@@ -32,12 +32,12 @@ namespace TSqlJump
         public string SelectedObjectType { get; private set; }
         public QuickObjectSearchAction SelectedAction { get; private set; }
 
-        public QuickObjectSearchForm(IDbConnection connection, string DatabaName)
+        public QuickObjectSearchForm(IDbConnection connection, string DatabaseName)
         {
             templateConnection = connection;
 
-            if(DatabaName != "")
-                database = DatabaName;
+            if(DatabaseName != "")
+                database = DatabaseName;
             else
                 database = connection.Database;
 
