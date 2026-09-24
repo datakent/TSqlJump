@@ -91,6 +91,14 @@ namespace TSqlJump
         #region helper_methods
         private static Server GetServer(IDbConnection connection)
         {
+            // Eğer connection nesnesi Microsoft.Data.SqlClient.SqlConnection tipindeyse:
+            if (connection is Microsoft.Data.SqlClient.SqlConnection sqlConn)
+            {
+                var serverConn = new ServerConnection(sqlConn);
+                return new Server(serverConn);
+            }
+
+            // Fallback olarak manuel yapılandırma
             var csb = new DbConnectionStringBuilder();
             csb.ConnectionString = connection.ConnectionString;
 
@@ -98,15 +106,17 @@ namespace TSqlJump
             string userId = TryGet(csb, "User ID") ?? TryGet(csb, "UID");
             string password = TryGet(csb, "Password") ?? TryGet(csb, "PWD");
 
-            string integratedSecurityRaw = TryGet(csb, "Integrated Security");
-            bool integratedSecurity =
-                !string.IsNullOrEmpty(integratedSecurityRaw) &&
-                (integratedSecurityRaw.Equals("True", StringComparison.OrdinalIgnoreCase) ||
-                 integratedSecurityRaw.Equals("SSPI", StringComparison.OrdinalIgnoreCase));
+            string integratedSecurityRaw = TryGet(csb, "Integrated Security") ?? TryGet(csb, "Trusted_Connection");
+            bool integratedSecurity = true;
 
-            // User ID varsa, Integrated Security belirtilmemiş olsa bile SQL auth'tur.
-            if (!integratedSecurity && string.IsNullOrEmpty(userId))
-                integratedSecurity = true;
+            if (!string.IsNullOrEmpty(integratedSecurityRaw))
+            {
+                bool.TryParse(integratedSecurityRaw, out integratedSecurity);
+            }
+            else if (!string.IsNullOrEmpty(userId))
+            {
+                integratedSecurity = false;
+            }
 
             var serverConnection = new ServerConnection(dataSource)
             {

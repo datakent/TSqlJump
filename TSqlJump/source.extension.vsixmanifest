@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="TSqlJump.0bf60e5c-56a0-4e73-b80b-1538cd279d71" Version="1.1" Language="en-US" Publisher="TSqlJump" />
+    <Identity Id="TSqlJump.0bf60e5c-56a0-4e73-b80b-1538cd279d71" Version="1.2" Language="en-US" Publisher="TSqlJump" />
     <DisplayName>TSqlJump</DisplayName>
     <Description xml:space="preserve">Fast object navigation for the SSMS T-SQL editor. Insert code templates, jump to the definition of a table/view/procedure/function/trigger under the cursor, and locate it in Object Explorer.</Description>
     <MoreInfo>https://github.com/datakent/TSqlJump</MoreInfo>
